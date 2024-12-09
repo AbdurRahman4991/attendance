@@ -282,14 +282,14 @@ $(document).ready(function() {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>${response[0].employee_Code}</td>
-                                            <td>${response[0].employee_Name}</td>
-                                            <td>${response[0].unit}</td>
-                                            <td>${response[0].department}</td>
-                                            <td>${response[0].designation}</td>
-                                            <td>${response[0].doj}</td>
-                                            <td>${response[0].shiftName}</td>
-                                            <td>${response[0].lateMargin}</td>
+                                            <td>${response[0].employee_Code ? response[0].employee_Code : 'N/A'}</td>
+                                            <td>${response[0].employee_Name ? response[0].employee_Name : 'N/A'}</td>
+                                            <td>${response[0].unit ? response[0].unit : 'N/A'}</td>
+                                            <td>${response[0].department ? response[0].department : 'N/A'}</td>
+                                            <td>${response[0].designation ? response[0].designation : 'N/A'}</td>                                            
+                                            <td>${response[0].doj ? response[0].doj.split('T')[0] : 'N/A'}</td>
+                                            <td>${response[0].shiftName ? response[0].shiftName : 'N/A'}</td>
+                                            <td>${response[0].lateMargin ? response[0].lateMargin : 'N/A'}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -310,7 +310,7 @@ $(document).ready(function() {
                                 var weekend = item.day_Status === 'W' ? 'bg-secondary' : '';
                                 var row = `<tr class="${lateClass} ${weekend}">
                                     <td>${id++}</td>
-                                    <td>${item.workingDate ? item.workingDate : 'N/A'}</td>
+                                    <td>${item.workingDate ? item.workingDate.split('T')[0] : 'N/A'}</td>
                                     <td>${item.day_Status ? item.day_Status : 'N/A'}</td>
                                     <td>${item.shiftInTime ? item.shiftInTime.split('T')[1] : 'N/A'}</td>
                                     <td>${item.shiftInTime ? item.shiftOutTime.split('T')[1] : 'N/A'}</td>
