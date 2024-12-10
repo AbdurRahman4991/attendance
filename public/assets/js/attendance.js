@@ -175,7 +175,6 @@ $(document).ready(function() {
             //                                 <td>${response.doj}</td>
             //                                 <td>${response.shiftName}</td>
             //                                 <td>${response.lateMargin}</td>
-
             //                             </tr>
             //                         </tbody>
             //                     </table>
@@ -307,15 +306,15 @@ $(document).ready(function() {
                             // Iterate through the response and append rows to the table
                             $.each(response, function(index, item) {
                                 var lateClass = item.late ? 'text-danger' : ''; 
-                                var weekend = item.day_Status === 'W' ? 'bg-secondary' : '';
+                                var weekend = item.day_Status === 'W' ? 'bg-dark text-light' : '';
                                 var row = `<tr class="${lateClass} ${weekend}">
                                     <td>${id++}</td>
                                     <td>${item.workingDate ? item.workingDate.split('T')[0] : 'N/A'}</td>
                                     <td>${item.day_Status ? item.day_Status : 'N/A'}</td>
-                                    <td>${item.shiftInTime ? item.shiftInTime.split('T')[1] : 'N/A'}</td>
-                                    <td>${item.shiftInTime ? item.shiftOutTime.split('T')[1] : 'N/A'}</td>
-                                    <td>${item.inTime ? (isValidDate(item.inTime) ? formatTime(item.inTime) : 'Invalid Time') : 'N/A'}</td> 
-                                    <td>${item.outTime ? (isValidDate(item.outTime) ? formatTime(item.outTime) : 'Invalid Time') : 'N/A'}</td> 
+                                    <td>${item.shiftInTime ? formatTime(item.shiftInTime) : 'N/A'}</td>
+                                    <td>${item.shiftOutTime ? formatTime(item.shiftOutTime) : 'N/A'}</td>
+                                    <td>${item.inTime ? item.inTime ? formatTime(item.inTime) : 'Invalid Time' : 'N/A'}</td> 
+                                    <td>${item.outTime ? item.outTime ? formatTime(item.outTime) : 'Invalid Time' : 'N/A'}</td> 
                                     <td>${item.working_Hours ? item.working_Hours : 'N/A'}</td>                                    
                                     <td>${item.late ? item.late : 'N/A'}</td>
                                     <td>${item.inTimeRequest ? item.inTimeRequest : 'N/A'}</td>
@@ -331,17 +330,28 @@ $(document).ready(function() {
                             // If no data is found
                             $("#attendanceTable tbody").append("<tr><td colspan='6'>No data found</td></tr>");
                         }
-            
+                        
                         // Helper function to check if a value is a valid date
-                        function isValidDate(date) {
-                            return !isNaN(new Date(date).getTime());
-                        }
-            
-                        // Helper function to extract and format time (HH:mm)
                         function formatTime(date) {
                             var time = new Date(date);
-                            return time.getHours().toString().padStart(2, '0') + ':' + time.getMinutes().toString().padStart(2, '0');
-                        }
+                            
+                            // Ensure the date is valid
+                            if (isNaN(time.getTime())) {
+                                return 'Invalid Time';
+                            }
+                            
+                            var hours = time.getHours();
+                            var minutes = time.getMinutes();
+                            var period = hours >= 12 ? 'PM' : 'AM';
+                        
+                            hours = hours % 12; // Convert to 12-hour format
+                            hours = hours ? hours : 12; // Handle 0 hour case (12 AM)
+                            
+                            // Ensure two digits for minutes
+                            minutes = minutes.toString().padStart(2, '0'); 
+                        
+                            return hours + ':' + minutes + ' ' + period;
+                        }                                                
                     },
                     error: function(xhr, status, error) {
                         // Handle error
@@ -356,12 +366,5 @@ $(document).ready(function() {
                     }
                 });
             });
-            
-        
-        
-        
-        
-    
-    
 
 });

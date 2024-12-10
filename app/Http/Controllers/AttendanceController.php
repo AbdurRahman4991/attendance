@@ -10,4 +10,8 @@ class AttendanceController extends Controller
     {
         return view('dashboard');
     }
+    public function groupeAttendnce()
+    {
+        return view('group_attendance');
+    }
 }
